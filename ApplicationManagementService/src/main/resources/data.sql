@@ -1,0 +1,3 @@
+INSERT INTO application(applicantid, applicantname, DATEOFBIRTH, highestqualification,  marksobtained, goals, emailid, scheduledprogramid, programname, status, dateofinterview) VALUES(101, 'Yash', '1997-09-21', 'BA', 75, 'CA', 'yash@gmail.com', 102, 'JAVA', 'Pending', '2020-08-19');
+
+INSERT INTO application(applicantid, applicantname, DATEOFBIRTH, highestqualification, marksobtained, goals, emailid, scheduledprogramid, programname, status, dateofinterview) VALUES(102, 'Charul', '1997-07-25', 'BE', 85, 'Engg', 'charul@gmail.com', 101, 'Angular', 'Pending', '2020-10-15');
