@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.validation.annotation.Validated;
 import com.cg.uas.participantservice.dto.ParticipantEntity;
 import com.cg.uas.participantservice.exception.ApplicationIdNotFoundException;
 import com.cg.uas.participantservice.exception.ProgramNameNotFoundException;
@@ -25,6 +25,7 @@ import java.util.Optional;
 
 
 @RestController
+@Validated
 @RequestMapping("/interview")
 public class PartcipantController {
 
@@ -67,5 +68,21 @@ public ResponseEntity<String> updateInterviewByApplicationId(@PathVariable("appl
 	 }
 	
 	
+	
+	  /**************************************************************************************
+		 - Method Name      : getInterviewStatusByApplicationId
+		 - Return type      : ResponseEntity<ParticipantEntity>
+		 - Author           : SatyaPavani Chekka
+		 - Creation Date    : 11-06-2020
+		 - Description      : View Interview Status By Application ID
+		 - End Point URL	: http://localhost:9090/interview/status/101
+		  
+	*************************************************************************************/
+	@GetMapping("status/{applicationId}")
+	public ResponseEntity<ParticipantEntity> getInterviewStatusByApplicationId(@PathVariable("applicationId") int applicationId, @RequestBody ParticipantEntity participant) throws ApplicationIdNotFoundException
+	{
+		ParticipantEntity interview =service.getApplicationStatusById(applicationId, participant);
+		return new ResponseEntity<ParticipantEntity>(interview, HttpStatus.ACCEPTED);
+	}
 	
 }
