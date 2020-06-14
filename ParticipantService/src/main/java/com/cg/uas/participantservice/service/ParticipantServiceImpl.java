@@ -79,6 +79,26 @@ public String updateInterviewByApplicationId(int applicationId, LocalDate interv
 		
 	}
 
+	
+	      
+  	/**************************************************************************************
+ 	 - Method Name      : getApplicationStatusById
+ 	 - Return type      : ParticipantEntity
+ 	 - Author           : SatyaPavani Chekka
+ 	 - Creation Date    : 11-06-2020
+ 	 - Description      : Can view the Status of the interview with the Application ID
+ 	  *************************************************************************************/
+	@Override
+	public ParticipantEntity getApplicationStatusById(int applicationId, ParticipantEntity participant) throws ApplicationIdNotFoundException {
+		// TODO Auto-generated method stub
+		//Optional<ParticipantEntity> entity= repository.findById(applicationId);
+		if(repository.existsById(applicationId))
+		{
+		    return repository.saveAndFlush(participant);
+		}
+		else
+			throw new ApplicationIdNotFoundException();
+	}
 
 
 	
