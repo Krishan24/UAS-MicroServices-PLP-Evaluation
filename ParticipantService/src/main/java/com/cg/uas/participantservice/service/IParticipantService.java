@@ -18,5 +18,5 @@ public interface IParticipantService {
 	
 public Optional<ParticipantEntity> getApplicationsByProgramName(String programName) throws ProgramNameNotFoundException; 
 public String updateInterviewByApplicationId(int applicationId, LocalDate interviewDate, String status) throws ApplicationIdNotFoundException;
-    
+public ParticipantEntity getApplicationStatusById(int applicationId, ParticipantEntity participant) throws ApplicationIdNotFoundException; 
 }
