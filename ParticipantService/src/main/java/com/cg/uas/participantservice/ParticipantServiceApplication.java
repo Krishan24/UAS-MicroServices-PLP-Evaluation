@@ -2,7 +2,7 @@
  - File Name        : Participant Service Application
  - Author           : SatyaPavani Chekka
  - Creation Date    : 11-06-2020
- - Description      : This is the Main Method consume University Admission System. 
+ - Description      : This is the Main Method for Participant Service Of University Admission System. 
   *********************************************************************************************/
 package com.cg.uas.participantservice;
 
