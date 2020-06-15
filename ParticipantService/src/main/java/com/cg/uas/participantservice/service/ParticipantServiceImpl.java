@@ -11,11 +11,12 @@ import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.slf4j.Logger;
 import com.cg.uas.participantservice.dao.ParticipantRepository;
 import com.cg.uas.participantservice.dto.ParticipantEntity;
 import com.cg.uas.participantservice.exception.*;
 
+import org.slf4j.LoggerFactory;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,9 @@ public class ParticipantServiceImpl implements IParticipantService{
 
 	@Autowired
 	ParticipantRepository repository;
+	String msg = "Sorry for the inconvinience, currently database is down";
+	String loggerMsg= "Problem with connectivity with service to DAO Layer";
+	Logger logger = LoggerFactory.getLogger(ParticipantServiceImpl.class);
 	
 	
 
@@ -46,6 +50,7 @@ public Optional<ParticipantEntity> getApplicationsByProgramName(String programNa
 			return interview;
 		}
 		else
+				logger.error(loggerMsg);
 			throw new ProgramNameNotFoundException();
 	}
 	
@@ -74,6 +79,7 @@ public String updateInterviewByApplicationId(int applicationId, LocalDate interv
         		return "Interview Date and Status updated successfully";
            }
            else
+		   	logger.error(loggerMsg);
         	   throw new ApplicationIdNotFoundException();
 	        
 		
@@ -97,6 +103,7 @@ public String updateInterviewByApplicationId(int applicationId, LocalDate interv
 		    return repository.saveAndFlush(participant);
 		}
 		else
+				logger.error(loggerMsg);
 			throw new ApplicationIdNotFoundException();
 	}
 
