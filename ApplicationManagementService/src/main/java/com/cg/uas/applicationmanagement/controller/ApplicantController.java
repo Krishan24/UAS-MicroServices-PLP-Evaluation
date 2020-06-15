@@ -71,7 +71,7 @@ public class ApplicantController {
 	@PostMapping("/addApplicant")
 	public ResponseEntity<ApplicantEntity> addApplicant(@Valid @RequestBody ApplicantEntity entity) throws ApplicantAlreadyExsistsException{
 		ApplicantEntity appEntity = service.addApplicant(entity);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(appEntity);
+		return ResponseEntity.status(HttpStatus.OK).body(appEntity);
 		
 	}
 	
@@ -107,7 +107,7 @@ public class ApplicantController {
 	@PutMapping("/{applicantid}")
 	public ResponseEntity<ApplicantEntity> updateApplicantById(@PathVariable("applicantid") Integer applicantid, @RequestBody ApplicantEntity entity) throws ApplicantNotFoundException{
 		ApplicantEntity appEntity = service.updateApplicantById(applicantid, entity);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(appEntity);
+		return ResponseEntity.status(HttpStatus.OK).body(appEntity);
 	}
 
 	
