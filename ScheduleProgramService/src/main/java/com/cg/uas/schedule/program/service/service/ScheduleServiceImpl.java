@@ -9,6 +9,8 @@ package com.cg.uas.schedule.program.service.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.cg.uas.schedule.program.service.dao.ScheduleProgramRepository;
 import com.cg.uas.schedule.program.service.dto.ScheduleProgram;
 import com.cg.uas.schedule.program.service.exception.ScheduleProgramExistException;
@@ -18,6 +20,9 @@ import com.cg.uas.schedule.program.service.exception.ScheduleProgramNotFoundExce
 public class ScheduleServiceImpl implements ScheduleService
 {
 	
+	Logger logger = LoggerFactory.getLogger(ScheduleServiceImpl.class);
+	String msg = "Sorry for the inconvinience, currently database is down";
+	String loggerMsg = "Problem with connectivity with service to DAO layer";
 	
 	@Autowired
 	private ScheduleProgramRepository repo;
@@ -53,9 +58,10 @@ public class ScheduleServiceImpl implements ScheduleService
 	  ******************************************************************************/ 
 	@Override
 	public ScheduleProgram addSchedule(ScheduleProgram schedule) throws ScheduleProgramExistException {
-		if (repo.existsById(schedule.getProgramId()))
+		if (repo.existsById(schedule.getProgramId())){
+			logger.error(loggerMsg);
 			throw new ScheduleProgramExistException();
-		else
+		}else
 			return repo.saveAndFlush(schedule);
 	}
 	/************************************************************************
@@ -68,6 +74,7 @@ public class ScheduleServiceImpl implements ScheduleService
 	@Override
 	public ScheduleProgram deleteScheduleById(int id) throws ScheduleProgramNotFoundException {
 		if (repo.existsById(id)) {
+			logger.error(loggerMsg);
 			ScheduleProgram s = repo.findById(id).orElse(null);
 			ScheduleProgram result = new ScheduleProgram(s.getProgramId(), s.getProgramName(), s.getLocation(), s.getStartDate(),
 					s.getEndDate(), s.getNoOfSeats());
