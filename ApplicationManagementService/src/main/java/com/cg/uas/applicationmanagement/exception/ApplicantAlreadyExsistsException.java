@@ -10,7 +10,6 @@ package com.cg.uas.applicationmanagement.exception;
 
 public class ApplicantAlreadyExsistsException extends Exception{
 	
-	private static final long serialVersionUID = 1L;
 
 	/************************************************************************
 	 - Method Name      : getMessage
