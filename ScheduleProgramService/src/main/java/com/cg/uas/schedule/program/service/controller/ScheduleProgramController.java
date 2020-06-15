@@ -6,11 +6,11 @@
  - Description      : This is an end point controller to consume University Addmission System. 
   ****************************************************************************************************/ 
 
-
 package com.cg.uas.schedule.program.service.controller;
 
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +56,7 @@ public class ScheduleProgramController
 	 -End Point URL			: http://localhost:4040/fetchbyid/101
 	  ************************************************************************/ 
 	@GetMapping("/fetchbyid/{id}")
-	public ResponseEntity<ScheduleProgram> getScheduleById(@PathVariable int id) throws ScheduleProgramNotFoundException {
+	public ResponseEntity<ScheduleProgram> getScheduleById(@PathVariable ("id") @Max(999) int id) throws ScheduleProgramNotFoundException {
 		ScheduleProgram sp = service.getScheduleById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(sp);
 	}
@@ -86,7 +86,7 @@ public class ScheduleProgramController
 	  ************************************************************************/ 
 	
 	@DeleteMapping("/deletebyid/{id}")
-	public ResponseEntity<ScheduleProgram> deleteSchedule(@Valid @PathVariable int id) throws ScheduleProgramNotFoundException {
+	public ResponseEntity<ScheduleProgram> deleteSchedule(@PathVariable ("id") int id) throws ScheduleProgramNotFoundException {
 		ScheduleProgram sp = service.deleteScheduleById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(sp);
 	}
