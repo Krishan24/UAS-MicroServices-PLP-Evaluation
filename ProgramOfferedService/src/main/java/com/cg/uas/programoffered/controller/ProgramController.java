@@ -69,7 +69,7 @@ public class ProgramController {
 	  ****************************************************************************************************************************/ 
 	
 	@GetMapping("/getById/{id}")
-	public ResponseEntity<Program> getProgramById(@Valid @PathVariable("id")@Positive  @Max(1000) int id) throws ProgramNotFoundException
+	public ResponseEntity<Program> getProgramById(@Valid @PathVariable("id")@Positive  @Max(999) int id) throws ProgramNotFoundException
 	{
 		Program program=service.getProgramById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(program);
@@ -109,7 +109,7 @@ public class ProgramController {
 	
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deleteProgram(@Valid @PathVariable("id")@Positive @Max(1000) int id) throws ProgramNotFoundException {
+	public ResponseEntity<String> deleteProgram(@Valid @PathVariable("id")@Positive @Max(999) int id) throws ProgramNotFoundException {
 		return ResponseEntity.ok(service.deleteProgramById(id));
 		
 	}
