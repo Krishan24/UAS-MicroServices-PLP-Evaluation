@@ -23,20 +23,22 @@ public class Program {
 	
 
 	@Id
-	@NotNull(message="Program Id can not be null")
+	@NotNull(message="Program Id is mandatory")
 	@Min(value=1, message="Id can not be smaller than 1")
-	@Max(value=1000, message="Id can not be greater than 1000")
+	@Max(value=999, message="Id can not more than 3 digit")
 	private int programid;
-	@NotBlank(message="Program name is Mandatory")
-	@Size(min = 2, message = "Name should have atleast 2 characters")
+	@NotBlank(message=" Program Name should be required")
+	@Size(min = 2, max=10, message = " Program Name should be 2 to 10 characters long")
 	private String programname;
-	@NotBlank(message="description is Mandatory")
+	@Size(min=2, message="Description has atleast 2 characters ")
+	@NotBlank(message="Description should not be blank  ")
 	private String description;
 	@NotBlank(message="eligibility is Mandatory")
+	@Size(min=2, message="Eligibility has atleast 2 characters ")
 	private String eligibility;
-	//@NotNull(message="Duration is Mandatory")
+	@NotNull(message="Duration is required")
 	@Max(value=5, message="duration year can not be greater than 5")
-	@Positive(message="duration can not br negative or 0")
+	@Positive(message="duration can not be negative or 0")
 	private int duration;
 	
 	
