@@ -54,7 +54,7 @@ public class ApplicantServiceImpl implements ApplicantService{
 		if(repo.existsById(entity.getApplicantid()))
 			throw new ApplicantAlreadyExsistsException();
 		else
-		return repo.save(entity);
+		return repo.saveAndFlush(entity);
 	}
 	
 
