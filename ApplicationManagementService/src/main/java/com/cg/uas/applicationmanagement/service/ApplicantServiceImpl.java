@@ -1,111 +1,110 @@
-/****************************************************************************************************************************
- - File Name        : ApplicantController
- - Author           : Charul Gupta
+/*******************************************************************************************
+ - File Name        : ApplicantServiceImpl
+ - Author           : Charul Gupta	
  - Creation Date    : 12-06-2020
- - Description      : This is an end point controller to consume Application Management Services.
- ****************************************************************************************************************************/ 
+ - Description      : This is Service interface for Application Management in University Admission System. 
+  ****************************************************************************************************/
 
-package com.cg.uas.applicationmanagement.controller;
+package com.cg.uas.applicationmanagement.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import javax.validation.Valid;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
+
+import com.cg.uas.applicationmanagement.dao.ApplicantRepository;
 import com.cg.uas.applicationmanagement.dto.ApplicantEntity;
 import com.cg.uas.applicationmanagement.exception.ApplicantAlreadyExsistsException;
 import com.cg.uas.applicationmanagement.exception.ApplicantNotFoundException;
-import com.cg.uas.applicationmanagement.service.ApplicantService;
 
 
-@RestController
-@Validated
-@RequestMapping("/applicants")
-public class ApplicantController {
-	
+@Service
+public class ApplicantServiceImpl implements ApplicantService{
 	
 	@Autowired
-	private ApplicantService service;
+	private ApplicantRepository repo;
+	String msg = "Sorry for the inconvinience, currently database id down";
+	String loggerMsg = "Problem with connectivity with service to DAO layer";
+	Logger logger = LoggerFactory.getLogger(ApplicantServiceImpl.class);
+
 	
-	
-	/****************************************************************************************************************************
-	 - Method Name      : getAllApplicants
-	 - Input Parameters : void
-	 - Return type      : List<ApplicantEntity> 
+	/************************************************************************
+	 - Method Name      : getAllApplicants()
+	 - Return type      : List<ApplicantEntity>
 	 - Author           : Charul Gupta
 	 - Creation Date    : 12-06-2020
-	 - Description      : fetching the applicant information from the database.
-	 - End point URL    : http://localhost:9001/applicants/getall
-	  ****************************************************************************************************************************/ 
-	
-	@GetMapping("/getall")
+	 - Description      : Getting all the applicant information from the database
+	  ******************************************************************************/ 
+	@Override
 	public List<ApplicantEntity> getAllApplicants() {
-		return service.getAllApplicants();
-	}
-	
-	
-	/****************************************************************************************************************************
-	 - Method Name      : addApplicant
-	 - Input Parameters : ApplicantEntity
-	 - Return type      : ResponseEntity
-	 - Author           : Charul Gupta
-	 - Creation Date    : 12-06-2020
-	 - Description      : Inserting the applicant information entered by user into the database.
-	 - End point URL    : http://localhost:9001/applicants/addApplicant
-	  ****************************************************************************************************************************/ 
-	
-	@PostMapping("/addApplicant")
-	public ResponseEntity<ApplicantEntity> addApplicant(@Valid @RequestBody ApplicantEntity entity) throws ApplicantAlreadyExsistsException{
-		ApplicantEntity appEntity = service.addApplicant(entity);
-		return ResponseEntity.status(HttpStatus.OK).body(appEntity);
-		
-	}
-	
-	
-	/****************************************************************************************************************************
-	 - Method Name      : getApplicantByProgramName
-	 - Input Parameters : programName
-	 - Return type      : ResponseEntity<ApplicantEntity>
-	 - Author           : Charul Gupta
-	 - Creation Date    : 12-06-2020
-	 - Description      : Fetching the applicant information from the database by Program Name.
-	 - End point URL    : http://localhost:9001/applicants/programNames
-	  ****************************************************************************************************************************/
-	
-	@GetMapping("/{programName}")
-	public ResponseEntity<ApplicantEntity> getApplicantByProgramName(@PathVariable("programName") String programName) throws ApplicantNotFoundException{
-		ApplicantEntity appEntity = service.getApplicantByProgramName(programName);
-		return ResponseEntity.status(HttpStatus.OK).body(appEntity);
-		
-		}
-	
-	
-	/****************************************************************************************************************************
-	 - Method Name      : updateApplicantById
-	 - Input Parameters : applicantid, ApplicantEntity
-	 - Return type      : ResponseEntity<ApplicantEntity>
-	 - Author           : Charul Gupta
-	 - Creation Date    : 12-06-2020
-	 - Description      : Updating the applicant information entered by user into the database.
-	 - End point URL    : http://localhost:9001/applicants/applicantid
-	  ****************************************************************************************************************************/
-	
-	@PutMapping("/{applicantid}")
-	public ResponseEntity<ApplicantEntity> updateApplicantById(@PathVariable("applicantid") Integer applicantid, @RequestBody ApplicantEntity entity) throws ApplicantNotFoundException{
-		ApplicantEntity appEntity = service.updateApplicantById(applicantid, entity);
-		return ResponseEntity.status(HttpStatus.OK).body(appEntity);
+		// TODO Auto-generated method stub
+		return repo.findAll();
 	}
 
+	
+	/************************************************************************
+	 - Method Name      : addApplicant
+	 - Return type      : ApplicantEntity
+	 - Author           : Charul Gupta
+	 - Creation Date    : 12-06-2020
+	 - Description      : Adding applicant information entered by user
+	  ******************************************************************************/ 
+	@Override
+	public ApplicantEntity addApplicant(ApplicantEntity entity) throws ApplicantAlreadyExsistsException{
+		// TODO Auto-generated method stub
+		if(repo.existsById(entity.getApplicantid())) {
+			logger.error(loggerMsg);
+			throw new ApplicantAlreadyExsistsException();
+		}
+		else
+		return repo.saveAndFlush(entity);
+	}
+	
+
+	/************************************************************************
+	 - Method Name      : getApplicantByProgramName
+	 - Return type      : ApplicantEntity
+	 - Author           : Charul Gupta
+	 - Creation Date    : 12-06-2020
+	 - Description      : Getting all applicant information on the basis of Program Name
+	  **********************************************************************************/ 
+	@Override
+	public ApplicantEntity getApplicantByProgramName( String programName) throws ApplicantNotFoundException{
+		Optional<ApplicantEntity> appEntity = repo.findByProgramName(programName);
+		if(appEntity.isPresent())
+			return appEntity.get();
+		else {
+			logger.error(loggerMsg);
+			throw new ApplicantNotFoundException();
+		}
+			
+	}
+	
+	
+	/************************************************************************
+	 - Method Name      : updateApplicantById
+	 - Return type      : ApplicantEntity
+	 - Author           : Charul Gupta
+	 - Creation Date    : 12-06-2020
+	 - Description      : Updating the applicant information entered by user
+	 ******************************************************************************/ 
+	@Override
+	public ApplicantEntity updateApplicantById(Integer applicantid, ApplicantEntity entity)throws ApplicantNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<ApplicantEntity> appEntity = repo.findById(applicantid);
+		if(appEntity.isPresent())
+			return repo.save(entity);
+		else {
+			logger.error(loggerMsg);
+		throw new ApplicantNotFoundException();
+		}
+	}
+
+	
+	
 	
 
 }
